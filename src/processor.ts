@@ -1,6 +1,6 @@
 import { TypeormDatabase } from "@subsquid/typeorm-store";
 import {EvmBatchProcessor} from '@subsquid/evm-processor'
-import { events, Contract } from "./abi/weth";
+import { events, Contract, functions } from "./abi/weth";
 import assert from "assert";
 import { ethers } from "ethers";
 
@@ -51,7 +51,7 @@ processor.run(new TypeormDatabase(), async (ctx) => {
     }
   }
   assert(b, 'must be defined')
-  let supply = await (new Contract({ _chain: ctx._chain, block: b}, WETH_CONTRACT).totalSupply())
+  let supply = await (new Contract(ctx, b, WETH_CONTRACT).totalSupply())
   ctx.log.info(`Deposited: ${deposited.toString()}, Withdrawn: ${withdrawn.toString()}, Diff: ${deposited.sub(withdrawn).toString()}, Supply: ${supply.toString()}`)
 });
 
